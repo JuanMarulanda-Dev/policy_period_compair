@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  cs:
+    build: .
+    volumes:
+      - db1_data:/data
+    container_name: sqlite_db1_cs
+
+  pc:
+    build: .
+    volumes:
+      - db2_data:/data
+    container_name: sqlite_db2_pc
+
+volumes:
+  db1_data:
+    driver: local
+  db2_data:
+    driver: local
