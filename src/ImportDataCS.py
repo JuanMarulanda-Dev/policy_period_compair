@@ -8,9 +8,9 @@ def main():
     db_service = DBService(db_name)
 
     conn = db_service.connect()
-    query = """CREATE TABLE IF NOT EXISTS PolicesCS (
-            npoliza TEXT PRIMARY KEY,
-            cantidad_beneficiarios INTEGER NOT NULL
+    query = """CREATE TABLE IF NOT EXISTS PoliciesCS (
+            master TEXT PRIMARY KEY,
+            numberOfRenewals INTEGER NOT NULL
         );"""
     db_service.create_table(conn, query)
 
@@ -18,7 +18,7 @@ def main():
     import_service = ImportService(conn)
 
     # Importar datos desde un archivo JSON
-    json_file_path = "C:\\Users\\juan.marulanda\\Desktop\\export_fix.json"
+    json_file_path = "C:\\Users\\juan.marulanda\\Desktop\\policy-period-compair\\db1_data\\export_fix.json"
     import_service.import_from_json(json_file_path)
 
     conn.close()
