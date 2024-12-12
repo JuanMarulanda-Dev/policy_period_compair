@@ -1,12 +1,11 @@
 from itertools import count
+import os
 
 import requests
-API_KEY = "ibHEEwSxOOZNtIeDWFwMzSUJm9T8V9sDchzCrns6fyPNzTrt"
+API_KEY =   os.getenv('API_KEY')
 
 master_policies = [
-    "028008161050", # expedida
-    "028008280764", # expedida
-    "028008339665"  # expedida pero no genero caratula
+    "028008241691"
 ]
 
 def get_document(policy):
@@ -16,7 +15,7 @@ def get_document(policy):
     }
     params = {
         "className": "Seguros",
-        "query": f"DSTipoDocumental='Caratula poliza' and NMNroPoliza like '{policy}' and DateCreated >= 20241201T000000Z",
+        "query": f"DSTipoDocumental='Caratula poliza' and NMNroPoliza like '{policy}' and DateCreated >= 20241203T000000Z",
         "order": "DateCreated DESC",
         "top": 1000,
         "properties": "FEFechaMovimiento,DSTipoDocumental,NMNroPoliza"
@@ -30,7 +29,7 @@ def get_document(policy):
         response.raise_for_status()
 
 def document_verification(document):
-     if document.get('count') == 1:
+     if document.get('count') >= 1:
         return 'si'
      else:
         return 'no'
@@ -42,7 +41,7 @@ def process_policy_verification_in_p8(policies):
         has_document = document_verification(document)
         if has_document == 'si':
             count+=1
-        print(f"{policy};{has_document}")
+        print(f"{policy};{has_document} count {document.get('count')}")
     print(f"Polizas Cargadas en P8: {count}" )
 
 process_policy_verification_in_p8(master_policies)
